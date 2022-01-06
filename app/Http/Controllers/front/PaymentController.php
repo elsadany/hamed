@@ -13,21 +13,7 @@ class PaymentController extends Controller {
         $cancel_url = url('payment/cancel?op=checkPayment');
         $code=$this->generatestring();
         $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://uatcheckout.thawani.om/api/v1/checkout/session",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => '{"client_reference_id": "'.$code.'","products": [{"name": "Order:' . $order->id . '","unit_amount": ' . ($order->price_after_discount * 1000) . ',"quantity": 1}],"total_amount":"' . $order->price_after_discount . '","success_url":"' . $success_url . '","cancel_url": "' . $cancel_url . '"'
-            . ',"metadata"=["order_id":'.$order->id.',"customer_name":"'.$order->user->name.'","customer_phone":"'.$order->user->phone.'","customer_email":"'.$order->user->email.'"]}',
-            CURLOPT_HTTPHEADER => [
-                "Content-Type: application/json",
-                "thawani-api-key: rRQ26GcsZzoEhbrP2HZvLYDbn9C9et"
-            ],
-        ]);
+      
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
